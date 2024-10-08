@@ -48,6 +48,20 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+
+const uint8_t Led7Seg[] = { 0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10011001, 0b10010010,
+		0b10000010, 0b11111000, 0b10000000, 0b10010000  };
+
+void display7SEG(int num){
+	uint8_t led_id = Led7Seg[num];
+	HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, (led_id & 0x01) );
+	HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, ((led_id>>1) & 0x01) );
+	HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, ((led_id>>2) & 0x01) );
+	HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, ((led_id>>3) & 0x01) );
+	HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, ((led_id>>4) & 0x01) );
+	HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, ((led_id>>5) & 0x01) );
+	HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, ((led_id>>6) & 0x01) );
+}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -63,6 +77,7 @@ static void MX_GPIO_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -91,8 +106,12 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int counter = 0;
   while (1)
   {
+	  if( counter >= 10) counter = 0;
+	   display7SEG ( counter ++) ;
+	   HAL_Delay (1000) ;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
