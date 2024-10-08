@@ -48,6 +48,16 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+#define LED_ON 1
+#define LED_OFF 0
+void led_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_SET);
+}
+void led_off(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_RESET);
+}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -91,8 +101,28 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int led_status=LED_OFF;
   while (1)
   {
+	  switch(led_status){
+	  case LED_ON:
+		  led_on();
+		  if(1){
+		  led_status=LED_OFF;
+		  }
+		  break;
+	  case LED_OFF:
+
+		  led_off();
+		  if(1){
+		  led_status = LED_ON;
+		  }
+		  break;
+	  default:
+		  break;
+	  }
+
+	  HAL_Delay(2000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
