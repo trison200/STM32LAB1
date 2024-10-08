@@ -48,6 +48,57 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+
+void red1_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, GPIO_PIN_RESET);
+}
+
+void yellow1_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, GPIO_PIN_RESET);
+}
+
+void green1_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, GPIO_PIN_SET);
+}
+
+void red2_on(){
+	HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, GPIO_PIN_RESET);
+}
+
+void yellow2_on(){
+	HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, GPIO_PIN_RESET);
+}
+
+void green2_on(){
+	HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, GPIO_PIN_SET);
+}
+
+const uint8_t Led7Seg[] = { 0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10011001, 0b10010010,
+		0b10000010, 0b11111000, 0b10000000, 0b10010000  };
+
+void display7SEG(int num){
+	uint8_t led_id = Led7Seg[num];
+	HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, (led_id & 0x01) );
+	HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, ((led_id>>1) & 0x01) );
+	HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, ((led_id>>2) & 0x01) );
+	HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, ((led_id>>3) & 0x01) );
+	HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, ((led_id>>4) & 0x01) );
+	HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, ((led_id>>5) & 0x01) );
+	HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, ((led_id>>6) & 0x01) );
+}
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -91,8 +142,46 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int t=0;
+   int counter;
   while (1)
   {
+	  if(t>=0 && t<3)
+	  	  {
+	  		  green1_on();
+	  		  red2_on();
+	  	  }
+	  	  else if( t>=3 && t<5 )
+	  	  {
+	  		  yellow1_on();
+	  		  red2_on();
+	  	  }
+	  	  else if ( t>=5 && t<8 ){
+	  		  red1_on();
+	  		  green2_on();
+	  	  }
+	  	  else if(t>=8 && t<10){
+	  		  red1_on();
+	  		  yellow2_on();
+	  	  }
+
+	  	  if(t==0){
+	  		  counter = 2;
+	  	  }
+	  	  if(t==3)
+	  		  {counter=1;}
+	  	  if(t==5)
+	  		  {counter=4;}
+	  	  if(t>=10)
+	  		  {counter=0;
+	  		  }
+	  	  display7SEG(counter--);
+
+	  	  t++;
+	  	  HAL_Delay(1000);
+	  	  if(t>=10){
+	  		  t=0;
+	  	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
