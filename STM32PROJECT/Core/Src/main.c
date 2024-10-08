@@ -48,6 +48,23 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+void red_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, GPIO_PIN_SET);
+}
+
+void yellow_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, GPIO_PIN_SET);
+}
+
+void green_on(){
+	HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, GPIO_PIN_RESET);
+}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -63,6 +80,7 @@ static void MX_GPIO_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -91,8 +109,28 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int cnt=0;
   while (1)
   {
+	  if(cnt>=0 && cnt<=4)
+	  	  		 		  {
+	  	  		 			 cnt++;
+	  	  		 			 red_on();
+	  	  		 		  }
+	  	  		 		  else if(cnt>=5 && cnt <=6 )
+	  	  		 		  {
+	  	  		 			  cnt++;
+	  	  		 			  yellow_on();
+	  	  		 		  }
+	  	  		 		  else if(cnt>=7 && cnt<=9)
+	  	  		 		  {
+	  	  		 			  cnt++;
+	  	  		 			  green_on();
+	  	  		 		  }
+	  	  		 		  else{
+	  	  		 			  cnt=0;
+	  	  		 		  }
+	  	 	 HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
