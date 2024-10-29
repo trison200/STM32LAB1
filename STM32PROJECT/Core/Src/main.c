@@ -61,6 +61,29 @@ static void MX_GPIO_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+
+uint16_t Pin_Number[12]= { num0_Pin, num1_Pin,num2_Pin, num3_Pin, num4_Pin, num5_Pin,num6_Pin, num7_Pin,
+		 num8_Pin, num9_Pin,num10_Pin, num11_Pin};
+
+void test(int n){
+	HAL_GPIO_WritePin(GPIOA, num0_Pin|num1_Pin|num2_Pin|num3_Pin|num4_Pin| num5_Pin|num6_Pin| num7_Pin|
+			 num8_Pin| num9_Pin|num10_Pin| num11_Pin, RESET);
+	HAL_GPIO_WritePin(GPIOA, Pin_Number[n] , SET);
+}
+
+void clearAllClock(){
+	HAL_GPIO_WritePin(GPIOA, num0_Pin|num1_Pin|num2_Pin|num3_Pin|num4_Pin| num5_Pin|num6_Pin| num7_Pin|
+			 num8_Pin| num9_Pin|num10_Pin| num11_Pin , RESET);
+}
+
+void setNumberOnClock(int num){
+	HAL_GPIO_WritePin(GPIOA, Pin_Number[num], SET);
+}
+
+void clearNumberOnClock(int num){
+	HAL_GPIO_WritePin(GPIOA, Pin_Number[num], RESET);
+}
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -91,8 +114,27 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int h = 0, min = 0, sec = 0;
   while (1)
   {
+	  if(sec == 60){
+	  		  sec = 0;
+	  		  min++;
+	  	  }
+	  	  if(min == 60){
+	  		  sec = 0;
+	  		  min = 0;
+	  		  h++;
+	  	  }
+	  	  if(h==24){
+	  		  h = 0;
+	  	  }
+	  	  clearAllClock();
+	  	  setNumberOnClock(h/2);
+	  	  setNumberOnClock(min/5);
+	  	  setNumberOnClock(sec/5);
+	  	  sec++;
+	  	  HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
